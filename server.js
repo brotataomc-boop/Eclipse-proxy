@@ -51,12 +51,30 @@ app.get("/", (req, res) => {
         <p>Enter a website address below.</p>
 
         <form action="/proxy" method="GET">
-          <input
-            type="url"
-            name="url"
-            placeholder="https://example.com"
-            required
-          >
+          <form action="/proxy" method="GET" onsubmit="fixUrl(event)">
+  <input
+    id="url"
+    name="url"
+    type="text"
+    placeholder="Enter a website..."
+    required
+  >
+
+  <button type="submit">Go</button>
+</form>
+
+<script>
+  function fixUrl(event) {
+    const input = document.getElementById("url");
+    let url = input.value.trim();
+
+    if (!url.startsWith("http://") && !url.startsWith("https://")) {
+      url = "https://" + url;
+    }
+
+    input.value = url;
+  }
+</script>
 
           <button type="submit">Go</button>
         </form>
