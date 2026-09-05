@@ -1,12 +1,13 @@
-```js
 import express from "express";
 
 const app = express();
 const port = process.env.PORT || 8080;
 
-/* =========================
-   HOME PAGE
-========================= */
+app.use(express.urlencoded({ extended: true }));
+
+// ===============================
+// HOME PAGE
+// ===============================
 
 app.get("/", (req, res) => {
   res.send(`
@@ -19,6 +20,7 @@ app.get("/", (req, res) => {
   <title>Eclipse Proxy</title>
 
   <style>
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -29,357 +31,411 @@ app.get("/", (req, res) => {
       min-height: 100vh;
       font-family: Arial, Helvetica, sans-serif;
       color: white;
-
       background:
-        radial-gradient(
-          circle at 50% 35%,
-          rgba(120, 80, 255, 0.18),
-          transparent 35%
-        ),
-        radial-gradient(
-          circle at 20% 80%,
-          rgba(60, 120, 255, 0.10),
-          transparent 30%
-        ),
-        #07070b;
-
+        radial-gradient(circle at 50% 20%, #18203b 0%, #090b16 40%, #03040a 100%);
       overflow-x: hidden;
     }
 
-    /* Background stars */
+    /* ===============================
+       STAR BACKGROUND
+       =============================== */
 
     .stars,
-    .stars::before,
-    .stars::after {
+    .stars2,
+    .stars3 {
       position: fixed;
       inset: 0;
       pointer-events: none;
-      z-index: -1;
+      z-index: 0;
     }
 
     .stars {
       background-image:
-        radial-gradient(circle, rgba(255,255,255,.5) 1px, transparent 1px);
-      background-size: 80px 80px;
-      opacity: .18;
+        radial-gradient(1px 1px at 20px 30px, white, transparent),
+        radial-gradient(1px 1px at 80px 100px, white, transparent),
+        radial-gradient(1px 1px at 160px 40px, white, transparent),
+        radial-gradient(1px 1px at 240px 180px, white, transparent),
+        radial-gradient(1px 1px at 320px 80px, white, transparent),
+        radial-gradient(1px 1px at 400px 200px, white, transparent),
+        radial-gradient(1px 1px at 500px 50px, white, transparent),
+        radial-gradient(1px 1px at 600px 140px, white, transparent),
+        radial-gradient(1px 1px at 700px 20px, white, transparent),
+        radial-gradient(1px 1px at 800px 160px, white, transparent);
+      background-size: 900px 300px;
+      opacity: 0.45;
     }
 
-    .stars::before {
-      content: "";
+    .stars2 {
       background-image:
-        radial-gradient(circle, rgba(255,255,255,.4) 1px, transparent 1px);
-      background-size: 130px 130px;
-      transform: translate(40px, 20px);
+        radial-gradient(1px 1px at 40px 140px, white, transparent),
+        radial-gradient(1px 1px at 130px 220px, white, transparent),
+        radial-gradient(1px 1px at 230px 60px, white, transparent),
+        radial-gradient(1px 1px at 350px 240px, white, transparent),
+        radial-gradient(1px 1px at 470px 120px, white, transparent),
+        radial-gradient(1px 1px at 580px 260px, white, transparent),
+        radial-gradient(1px 1px at 690px 100px, white, transparent),
+        radial-gradient(1px 1px at 820px 210px, white, transparent);
+      background-size: 950px 350px;
+      opacity: 0.25;
     }
 
-    .stars::after {
-      content: "";
+    .stars3 {
       background-image:
-        radial-gradient(circle, rgba(255,255,255,.35) 1px, transparent 1px);
-      background-size: 190px 190px;
-      transform: translate(-30px, 70px);
+        radial-gradient(2px 2px at 150px 150px, white, transparent),
+        radial-gradient(2px 2px at 450px 250px, white, transparent),
+        radial-gradient(2px 2px at 750px 100px, white, transparent);
+      background-size: 1000px 400px;
+      opacity: 0.2;
     }
 
-    /* Main container */
+    /* ===============================
+       MAIN
+       =============================== */
 
     .container {
+      position: relative;
+      z-index: 1;
+
       min-height: 100vh;
+
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 30px;
+
+      padding: 70px 20px 30px;
     }
 
-    .content {
-      width: 100%;
-      max-width: 850px;
-      text-align: center;
-    }
+    /* ===============================
+       LOGO
+       =============================== */
 
-    /* Eclipse logo */
-
-    .eclipse {
+    .logo {
       width: 105px;
       height: 105px;
-      margin: 0 auto 30px;
 
       border-radius: 50%;
 
-      background: #050509;
+      background:
+        radial-gradient(
+          circle at 35% 35%,
+          #202944 0%,
+          #101526 45%,
+          #05070e 70%
+        );
 
       box-shadow:
-        0 0 25px rgba(130, 90, 255, .65),
-        0 0 60px rgba(90, 60, 255, .35),
-        inset 0 0 25px rgba(255,255,255,.04);
+        0 0 20px rgba(115, 145, 255, 0.45),
+        0 0 60px rgba(90, 110, 255, 0.18);
 
       position: relative;
+
+      margin-bottom: 25px;
     }
 
-    .eclipse::after {
+    .logo::before {
       content: "";
 
       position: absolute;
 
-      width: 112px;
-      height: 112px;
-
-      top: -4px;
-      left: -4px;
+      inset: -7px;
 
       border-radius: 50%;
 
-      border: 2px solid rgba(155, 120, 255, .65);
+      border: 3px solid rgba(155, 170, 255, 0.75);
 
       box-shadow:
-        0 0 20px rgba(140, 100, 255, .5),
-        0 0 45px rgba(100, 70, 255, .25);
+        0 0 20px rgba(120, 140, 255, 0.6),
+        inset 0 0 15px rgba(120, 140, 255, 0.3);
     }
 
-    /* Title */
+    .logo::after {
+      content: "";
+
+      position: absolute;
+
+      width: 65px;
+      height: 65px;
+
+      border-radius: 50%;
+
+      background: #03040a;
+
+      top: 20px;
+      left: 20px;
+
+      box-shadow:
+        0 0 20px rgba(0, 0, 0, 0.9);
+    }
+
+    /* ===============================
+       TITLE
+       =============================== */
 
     h1 {
-      font-size: clamp(42px, 8vw, 72px);
-      font-weight: 700;
+      font-size: clamp(42px, 8vw, 75px);
+
+      font-weight: 800;
+
       letter-spacing: -2px;
 
-      background: linear-gradient(
-        135deg,
-        #ffffff,
-        #cfc7ff,
-        #927cff
-      );
+      background:
+        linear-gradient(
+          90deg,
+          #9ea9ff,
+          #d9ddff,
+          #8a96ff
+        );
 
       -webkit-background-clip: text;
       background-clip: text;
+
       color: transparent;
 
-      margin-bottom: 12px;
+      text-align: center;
+
+      text-shadow:
+        0 0 25px rgba(125, 140, 255, 0.25);
+
+      margin-bottom: 10px;
     }
 
-    .tagline {
-      color: #9998a8;
+    .subtitle {
+      color: #9da5c3;
+
       font-size: 17px;
-      margin-bottom: 38px;
+
+      text-align: center;
+
+      margin-bottom: 45px;
     }
 
-    /* Search */
+    /* ===============================
+       SEARCH BOX
+       =============================== */
 
-    .search-container {
+    .search-box {
+      width: min(760px, 100%);
+
       display: flex;
-      align-items: center;
 
-      padding: 7px;
+      gap: 10px;
 
-      background: rgba(255,255,255,.055);
+      padding: 9px;
 
-      border: 1px solid rgba(255,255,255,.11);
+      background: rgba(15, 19, 35, 0.8);
+
+      border: 1px solid rgba(125, 140, 255, 0.25);
 
       border-radius: 18px;
 
-      backdrop-filter: blur(18px);
-
       box-shadow:
-        0 20px 60px rgba(0,0,0,.4),
-        inset 0 1px rgba(255,255,255,.05);
+        0 15px 50px rgba(0, 0, 0, 0.35),
+        0 0 30px rgba(90, 110, 255, 0.08);
 
-      transition: .25s ease;
+      backdrop-filter: blur(15px);
+
+      margin-bottom: 25px;
     }
 
-    .search-container:focus-within {
-      border-color: rgba(145,115,255,.55);
-
-      box-shadow:
-        0 20px 60px rgba(0,0,0,.5),
-        0 0 35px rgba(110,80,255,.14);
-    }
-
-    .search-icon {
-      width: 48px;
-      color: #77758a;
-      font-size: 20px;
-      user-select: none;
-    }
-
-    #url {
+    .search-box input {
       flex: 1;
 
       min-width: 0;
 
-      background: transparent;
       border: none;
+
       outline: none;
+
+      padding: 17px 18px;
+
+      border-radius: 12px;
+
+      background: rgba(255, 255, 255, 0.05);
 
       color: white;
 
       font-size: 16px;
-
-      padding: 16px 5px;
     }
 
-    #url::placeholder {
-      color: #6e6c7c;
+    .search-box input::placeholder {
+      color: #747c99;
     }
 
-    .go-button {
+    .search-box button {
       border: none;
 
-      padding: 14px 24px;
+      border-radius: 12px;
 
-      border-radius: 13px;
+      padding: 0 25px;
+
+      font-size: 16px;
+
+      font-weight: 700;
 
       color: white;
 
-      font-size: 15px;
-      font-weight: 600;
-
       cursor: pointer;
 
-      background: linear-gradient(
-        135deg,
-        #7558ff,
-        #5438d8
-      );
+      background:
+        linear-gradient(
+          135deg,
+          #6674ff,
+          #8b5cf6
+        );
 
       box-shadow:
-        0 7px 20px rgba(90,60,220,.3);
+        0 5px 20px rgba(100, 110, 255, 0.25);
 
-      transition: .2s ease;
+      transition:
+        transform 0.2s,
+        box-shadow 0.2s;
     }
 
-    .go-button:hover {
-      transform: translateY(-1px);
+    .search-box button:hover {
+      transform: translateY(-2px);
 
       box-shadow:
-        0 10px 28px rgba(90,60,220,.45);
+        0 8px 25px rgba(100, 110, 255, 0.4);
     }
 
-    .go-button:active {
-      transform: translateY(1px);
-    }
-
-    /* Quick links */
-
-    .quick-links {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-
-      margin-top: 22px;
-    }
-
-    .quick-link {
-      border: 1px solid rgba(255,255,255,.08);
-
-      background: rgba(255,255,255,.035);
-
-      color: #aaa8b8;
-
-      padding: 9px 15px;
-
-      border-radius: 999px;
-
-      font-size: 13px;
-
-      cursor: pointer;
-
-      transition: .2s ease;
-    }
-
-    .quick-link:hover {
-      color: white;
-
-      background: rgba(255,255,255,.08);
-
-      border-color: rgba(150,130,255,.3);
-    }
-
-    /* Status */
+    /* ===============================
+       STATUS
+       =============================== */
 
     .status {
       display: flex;
+
       align-items: center;
-      justify-content: center;
 
       gap: 8px;
 
-      margin-top: 35px;
+      color: #9da5c3;
 
-      color: #777585;
+      font-size: 14px;
 
-      font-size: 12px;
+      margin-bottom: 45px;
     }
 
     .status-dot {
-      width: 7px;
-      height: 7px;
+      width: 9px;
+      height: 9px;
 
       border-radius: 50%;
 
-      background: #6ee7a0;
+      background: #6ee7b7;
 
-      box-shadow: 0 0 10px rgba(110,231,160,.7);
+      box-shadow:
+        0 0 12px rgba(110, 231, 183, 0.8);
     }
 
-    /* Footer */
+    /* ===============================
+       QUICK LINKS
+       =============================== */
+
+    .quick-title {
+      color: #8e96b2;
+
+      font-size: 13px;
+
+      text-transform: uppercase;
+
+      letter-spacing: 2px;
+
+      margin-bottom: 15px;
+    }
+
+    .quick-links {
+      display: flex;
+
+      flex-wrap: wrap;
+
+      justify-content: center;
+
+      gap: 12px;
+
+      width: min(760px, 100%);
+    }
+
+    .quick-links button {
+      border: 1px solid rgba(140, 150, 210, 0.18);
+
+      background: rgba(255, 255, 255, 0.035);
+
+      color: #cbd0e6;
+
+      padding: 11px 18px;
+
+      border-radius: 10px;
+
+      cursor: pointer;
+
+      transition:
+        background 0.2s,
+        transform 0.2s,
+        border-color 0.2s;
+    }
+
+    .quick-links button:hover {
+      background: rgba(130, 140, 255, 0.1);
+
+      border-color: rgba(130, 140, 255, 0.4);
+
+      transform: translateY(-2px);
+    }
+
+    /* ===============================
+       FOOTER
+       =============================== */
 
     footer {
-      position: fixed;
+      margin-top: auto;
 
-      bottom: 20px;
-      left: 0;
-      right: 0;
+      padding-top: 60px;
+
+      color: #5f6680;
+
+      font-size: 13px;
 
       text-align: center;
-
-      color: #555361;
-
-      font-size: 12px;
     }
 
-    /* Loading */
+    /* ===============================
+       LOADING
+       =============================== */
 
     .loading {
-      display: none;
-
       position: fixed;
 
       inset: 0;
 
-      background: rgba(5,5,9,.82);
+      z-index: 10;
 
-      backdrop-filter: blur(8px);
+      display: none;
 
       align-items: center;
+
       justify-content: center;
 
-      flex-direction: column;
+      background: rgba(3, 4, 10, 0.8);
 
-      z-index: 100;
+      backdrop-filter: blur(8px);
     }
 
-    .loading.show {
+    .loading.active {
       display: flex;
     }
 
     .loader {
-      width: 42px;
-      height: 42px;
+      width: 50px;
+      height: 50px;
 
       border-radius: 50%;
 
-      border: 3px solid rgba(255,255,255,.1);
+      border: 4px solid rgba(255, 255, 255, 0.1);
 
-      border-top-color: #8c73ff;
+      border-top-color: #8b96ff;
 
       animation: spin 0.8s linear infinite;
-
-      margin-bottom: 18px;
-    }
-
-    .loading-text {
-      color: #aaa8b8;
-      font-size: 14px;
     }
 
     @keyframes spin {
@@ -388,129 +444,125 @@ app.get("/", (req, res) => {
       }
     }
 
-    /* Mobile */
+    /* ===============================
+       MOBILE
+       =============================== */
 
     @media (max-width: 600px) {
 
       .container {
-        padding: 20px;
+        padding-top: 45px;
       }
 
-      .search-container {
-        border-radius: 15px;
+      .logo {
+        width: 85px;
+        height: 85px;
       }
 
-      .search-icon {
-        display: none;
+      .logo::after {
+        width: 53px;
+        height: 53px;
+
+        top: 16px;
+        left: 16px;
       }
 
-      #url {
-        padding-left: 12px;
+      .search-box {
+        flex-direction: column;
       }
 
-      .go-button {
-        padding: 13px 17px;
+      .search-box button {
+        padding: 15px;
       }
 
-      footer {
-        position: static;
-        margin-top: 35px;
+      .subtitle {
+        font-size: 15px;
       }
     }
+
   </style>
 </head>
 
 <body>
 
   <div class="stars"></div>
+  <div class="stars2"></div>
+  <div class="stars3"></div>
 
-  <div class="container">
+  <main class="container">
 
-    <main class="content">
+    <div class="logo"></div>
 
-      <div class="eclipse"></div>
+    <h1>Eclipse Proxy</h1>
 
-      <h1>Eclipse</h1>
+    <p class="subtitle">
+      A simple and elegant web proxy
+    </p>
 
-      <p class="tagline">
-        A simple, clean gateway to the web.
-      </p>
+    <form
+      class="search-box"
+      action="/proxy"
+      method="GET"
+      onsubmit="return fixUrl(event)"
+    >
 
-      <form
-        class="search-container"
-        action="/proxy"
-        method="GET"
-        onsubmit="fixUrl(event)"
+      <input
+        id="url"
+        name="url"
+        type="text"
+        placeholder="Enter a website URL..."
+        autocomplete="off"
+        spellcheck="false"
       >
 
-        <div class="search-icon">
-          ⌕
-        </div>
+      <button type="submit">
+        Go
+      </button>
 
-        <input
-          id="url"
-          name="url"
-          type="text"
-          autocomplete="off"
-          placeholder="Enter a website address..."
-          required
-        >
+    </form>
 
-        <button class="go-button" type="submit">
-          Go
-        </button>
-
-      </form>
-
-      <div class="quick-links">
-
-        <button
-          class="quick-link"
-          onclick="setSite('https://example.com')"
-        >
-          Example
-        </button>
-
-        <button
-          class="quick-link"
-          onclick="setSite('https://wikipedia.org')"
-        >
-          Wikipedia
-        </button>
-
-        <button
-          class="quick-link"
-          onclick="setSite('https://www.mozilla.org')"
-        >
-          Mozilla
-        </button>
-
-      </div>
-
-      <div class="status">
-
-        <span class="status-dot"></span>
-
-        Eclipse is online
-
-      </div>
-
-    </main>
-
-  </div>
-
-  <footer>
-    Eclipse Proxy • Built for the web
-  </footer>
-
-  <div class="loading" id="loading">
-
-    <div class="loader"></div>
-
-    <div class="loading-text">
-      Loading website...
+    <div class="status">
+      <span class="status-dot"></span>
+      Eclipse is online
     </div>
 
+    <div class="quick-title">
+      Quick Links
+    </div>
+
+    <div class="quick-links">
+
+      <button
+        type="button"
+        onclick="setSite('https://example.com')"
+      >
+        Example
+      </button>
+
+      <button
+        type="button"
+        onclick="setSite('https://wikipedia.org')"
+      >
+        Wikipedia
+      </button>
+
+      <button
+        type="button"
+        onclick="setSite('https://developer.mozilla.org')"
+      >
+        MDN
+      </button>
+
+    </div>
+
+    <footer>
+      Eclipse Proxy • Educational Web Proxy
+    </footer>
+
+  </main>
+
+  <div class="loading" id="loading">
+    <div class="loader"></div>
   </div>
 
   <script>
@@ -521,6 +573,14 @@ app.get("/", (req, res) => {
 
       let url = input.value.trim();
 
+      if (!url) {
+        event.preventDefault();
+
+        input.focus();
+
+        return false;
+      }
+
       if (
         !url.startsWith("http://") &&
         !url.startsWith("https://")
@@ -530,9 +590,9 @@ app.get("/", (req, res) => {
 
       input.value = url;
 
-      document
-        .getElementById("loading")
-        .classList.add("show");
+      document.getElementById("loading").classList.add("active");
+
+      return true;
     }
 
     function setSite(url) {
@@ -542,11 +602,10 @@ app.get("/", (req, res) => {
       input.value = url;
 
       input.focus();
+
     }
 
-    /* Keyboard shortcut */
-
-    document.addEventListener("keydown", (event) => {
+    document.addEventListener("keydown", function(event) {
 
       if (
         (event.ctrlKey || event.metaKey) &&
@@ -569,23 +628,49 @@ app.get("/", (req, res) => {
 });
 
 
-/* =========================
-   PROXY
-========================= */
+// ===============================
+// PROXY
+// ===============================
 
 app.get("/proxy", async (req, res) => {
 
+  const rawUrl = req.query.url;
+
+  if (!rawUrl || typeof rawUrl !== "string") {
+
+    return res
+      .status(400)
+      .send("Eclipse Proxy: Please enter a website URL.");
+
+  }
+
+  let target;
+
   try {
 
-    const target = new URL(req.query.url);
+    target = new URL(rawUrl);
 
-    if (
-      !["http:", "https:"].includes(target.protocol)
-    ) {
-      return res
-        .status(400)
-        .send("Eclipse Proxy: Only HTTP and HTTPS are supported.");
-    }
+  } catch {
+
+    return res
+      .status(400)
+      .send("Eclipse Proxy: That is not a valid URL.");
+
+  }
+
+  // Only allow normal web URLs.
+  if (
+    target.protocol !== "http:" &&
+    target.protocol !== "https:"
+  ) {
+
+    return res
+      .status(400)
+      .send("Eclipse Proxy: Only HTTP and HTTPS URLs are supported.");
+
+  }
+
+  try {
 
     const response = await fetch(target);
 
@@ -594,7 +679,9 @@ app.get("/proxy", async (req, res) => {
       return res
         .status(response.status)
         .send(
-          \`Eclipse Proxy: The website returned \${response.status}.\`
+          "Eclipse Proxy: The website returned " +
+          response.status +
+          "."
         );
 
     }
@@ -602,19 +689,27 @@ app.get("/proxy", async (req, res) => {
     const contentType =
       response.headers.get("content-type") || "";
 
+    /*
+      This simple version is designed for HTML pages.
+      Other file types are not rewritten.
+    */
+
     if (!contentType.includes("text/html")) {
 
       return res
         .status(415)
         .send(
-          "Eclipse Proxy: This version only supports HTML pages."
+          "Eclipse Proxy: This version currently supports HTML pages."
         );
 
     }
 
     const html = await response.text();
 
-    res.set("Content-Type", "text/html");
+    res.set(
+      "Content-Type",
+      "text/html; charset=utf-8"
+    );
 
     res.send(html);
 
@@ -623,9 +718,9 @@ app.get("/proxy", async (req, res) => {
     console.error(error);
 
     res
-      .status(400)
+      .status(500)
       .send(
-        "Eclipse Proxy: Could not load that website."
+        "Eclipse Proxy: Unable to load that website."
       );
 
   }
@@ -633,15 +728,15 @@ app.get("/proxy", async (req, res) => {
 });
 
 
-/* =========================
-   START SERVER
-========================= */
+// ===============================
+// START SERVER
+// ===============================
 
 app.listen(port, "0.0.0.0", () => {
 
   console.log(
-    \`Eclipse Proxy is running on port \${port}\`
+    "Eclipse Proxy is running on port " +
+    port
   );
 
 });
-```
