@@ -49,8 +49,7 @@ app.get("/", (req, res) => {
         <h1>🌑 Eclipse Proxy</h1>
 
         <p>Enter a website address below.</p>
-
-        <form action="/proxy" method="GET">
+        
           <form action="/proxy" method="GET" onsubmit="fixUrl(event)">
   <input
     id="url"
